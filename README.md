@@ -1,5 +1,5 @@
 # react-workshop-day1
-React.js workshop. Self contained, one-day workshop covering the basics
+React.js workshop. Self contained, one-day workshop covering the basics. Please follow all of these instructions **before** attending the workshop.
 
 ## Prerequisite Software & Setup
 * [Node.js](https://nodejs.org/) ^4.6.0 LTS
