@@ -7,7 +7,7 @@ class HelloWorld extends React.Component {
     var now = new Date();
     var formattedDate = moment(now).format('MMMM Do YYYY, h:mm:ss A');
     return (
-      <div><h1>Welcome to Fort Lauderdale!</h1>
+      <div><h1>Welcome to Atlanta!</h1>
       <h2>The current time is: {formattedDate}</h2>
       </div>
     );

@@ -14,7 +14,7 @@ class HelloWorld extends React.Component {
       <div>
         <Panel>
           <Jumbotron>
-            <h1>Welcome to Fort Lauderdale!</h1>
+            <h1>Welcome to Atlanta!</h1>
             <p>The current time is: {formattedDate}</p>
             <p><Button bsStyle="primary">Learn more</Button></p>
           </Jumbotron>
