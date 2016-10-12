@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "./../node_modules/.bin/webpack-dev-server",
-    "solution": "./../node_modules/.bin/webpack-dev-server --config webpack.solution.config.js"
+    "start": "node ./../node_modules/webpack-dev-server/bin/webpack-dev-server.js",
+    "solution": "node ./../node_modules/webpack-dev-server/bin/webpack-dev-server.js --config webpack.solution.config.js"
   }
 }
