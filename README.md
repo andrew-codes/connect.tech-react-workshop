@@ -6,5 +6,5 @@ React.js workshop. Self contained, one-day workshop covering the basics. Please 
 * [Git](https://git-scm.com/downloads) ^2.10.0
 * Bash Console; examples [cmdr](http://cmder.net) on Windows or [iTerm](https://www.iterm2.com) on OSX
 * Favorite Editor; examples [WebStorm](https://www.jetbrains.com/webstorm/)(paid) or [Atom](https://atom.io)(free)
-* Clone Git repo: [https://github.com/andrew-codes/react-workshop-day1](https://github.com/andrew-codes/react-workshop-day1)
-* `cd react-workshop-day1 && npm install`
+* Clone Git repo: [https://github.com/andrew-codes/connect.tech-react-workshop](https://github.com/andrew-codes/connect.tech-react-workshop)
+* `cd connect.tech-react-workshop && npm install`
