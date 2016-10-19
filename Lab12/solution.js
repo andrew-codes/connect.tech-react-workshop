@@ -5,7 +5,8 @@ import Panel from 'react-bootstrap/lib/Panel';
 import Input from 'react-bootstrap/lib/Input';
 import Label from 'react-bootstrap/lib/Label';
 import Button from 'react-bootstrap/lib/Button';
-import ButtonToolbar from 'react-bootstrap/lib/ButtonToolbar';
+import Nav from 'react-bootstrap/lib/Nav';
+import NavItem from 'react-bootstrap/lib/NavItem';
 import {Router, Route, Link, IndexRoute} from 'react-router';
 import axios from 'axios';
 // import api from './api';
@@ -15,11 +16,11 @@ class LunchApp extends React.Component {
     render() {
         return (
             <div>
-                <ButtonToolbar>
-                    <Button bsStyle="primary" bsSize="large"><Link to={'/'}>Home</Link></Button>
-                    <Button bsSize="large"><Link to={'contact'}>Contact Us</Link></Button>
-                    <Button bsSize="large"><Link to={'support'}>Support</Link></Button>
-                </ButtonToolbar>
+                <Nav bsStyle="pills">
+                    <NavItem href="#/">Home</NavItem>
+                    <NavItem href="#/contact">Contact Us</NavItem>
+                    <NavItem href="#/support">Support</NavItem>
+                </Nav>
                 {this.props.children}
             </div>
         );
