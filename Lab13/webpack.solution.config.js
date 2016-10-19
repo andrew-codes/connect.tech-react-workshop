@@ -35,7 +35,7 @@ module.exports = {
         test: /\.js/,
         exclude: /node_modules/,
         loaders: [
-          'babel-loader?optional[]=runtime&stage=0'
+          'babel-loader'
         ]
       },
       {test: /\.js$/, loader: "eslint-loader", exclude: /node_modules/}
