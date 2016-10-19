@@ -5,7 +5,7 @@
   "description": "React.js workshop. Self contained, one-day workshop covering the basics.",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --compilers js:babel-core/register --require test/setup.js **/*.spec.js --recursive"
+    "test": "mocha --compilers js:babel-register --require test/setup.js **/*.spec.js --recursive"
   },
   "repository": {
     "type": "git",
