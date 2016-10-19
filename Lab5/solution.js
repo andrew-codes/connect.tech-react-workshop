@@ -6,13 +6,13 @@ import Label from 'react-bootstrap/lib/Label';
 
 class LunchApp extends React.Component {
     render() {
-        var now = new Date();
-        var formattedDate = moment(now).format('MMMM Do YYYY');
+        const now = new Date();
+        const formattedDate = moment(now).format('MMMM Do YYYY');
         return (
             <div>
                 <Panel>
                     <h2>Options for lunch for {formattedDate}:</h2>
-                    <LunchOptionsPanel lunchData={this.props.lunchChoices}> </LunchOptionsPanel>
+                    <LunchOptionsPanel lunchData={this.props.lunchChoices} />
                 </Panel>
             </div>
         );
@@ -20,13 +20,12 @@ class LunchApp extends React.Component {
 }
 
 class LunchOptionsPanel extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {selectedLunch: 'Nothing selected'};
-    }
+    state = {
+        selectedLunch: 'Nothing selected'
+    };
 
     handleClick = (event) => {
-
+        this.setState({selectedLunch: event.target.textContent});
     };
 
     render() {
@@ -41,17 +40,13 @@ class LunchOptionsPanel extends React.Component {
                         </h3>
                     ))}
                 </Panel>
-                <SelectedLunchPanel selectedLunch={this.state.selectedLunch}></SelectedLunchPanel>
+                <SelectedLunchPanel selectedLunch={this.state.selectedLunch} />
             </div>
         );
     }
 }
 
 class SelectedLunchPanel extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         return (
             <div>
@@ -63,7 +58,7 @@ class SelectedLunchPanel extends React.Component {
     }
 }
 
-var lunchChoices = ['Chicken', 'Fish', 'Vegetarian'];
+const lunchChoices = ['Chicken', 'Fish', 'Vegetarian'];
 ReactDOM.render(
     <LunchApp lunchChoices={lunchChoices} />,
     document.getElementById('root')

@@ -1,6 +1,6 @@
-const React = require('react');
-const {mount} = require('enzyme');
-const TodoItem = require('../Lab13/todo-item');
+import React from 'react';
+import {mount} from 'enzyme';
+import TodoItem from '../Lab13/todo-item';
 
 describe('Todo-item component', function() {
     describe('when rendering the component', () => {

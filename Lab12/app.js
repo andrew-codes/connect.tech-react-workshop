@@ -1,203 +1,170 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import moment from 'moment';
-import Bootstrap from 'react-bootstrap';
-import Jumbotron from 'react-bootstrap/lib/Jumbotron';
 import Panel from 'react-bootstrap/lib/Panel';
 import Input from 'react-bootstrap/lib/Input';
 import Label from 'react-bootstrap/lib/Label';
 import Button from 'react-bootstrap/lib/Button';
-// import api from './api';
 import axios from 'axios';
-var endpoint = '/lunches';
+// import api from './api';
+const endpoint = '/lunches';
 
 class LunchApp extends React.Component {
-  render() {
-    var now = new Date();
-    var formattedDate = moment(now).format('MMMM Do YYYY');
-    return (
-      <div>
-        <Panel>
-          <h2>Options for lunch for {formattedDate}:</h2>
-          <LunchOptionsPanel lunchData={this.props.lunchChoices}> </LunchOptionsPanel>
-        </Panel>
-      </div>
-    );
-  }
+    render() {
+        const now = new Date();
+        const formattedDate = moment(now).format('MMMM Do YYYY');
+        return (
+            <div>
+                <Panel>
+                    <h2>Options for lunch for {formattedDate}:</h2>
+                    <LunchOptionsPanel lunchData={this.props.lunchChoices} />
+                </Panel>
+            </div>
+        );
+    }
 }
 
 class LunchOptionsPanel extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {selectedLunch: 'Nothing selected', lunchOrders: []};
-    this.handleClick = this.handleClick.bind(this);
-    this.showLunchOrdersHandler = this.showLunchOrdersHandler.bind(this);
-    this.saveLunchOrderHandler = this.saveLunchOrderHandler.bind(this);
+    state = {
+        selectedLunch: 'Nothing selected',
+        lunchOrder: []
+    };
 
-  }
-  handleClick(event) {
-    // may need to use innerText for older IE
-    this.setState({
-      selectedLunch: event.target.textContent
+    handleClick = (event) => {
+        // may need to use innerText for older IE
+        this.setState({
+            selectedLunch: event.target.textContent
+        });
+    };
+
+    showLunchOrdersHandler = () => {
+        this.getData()
+            .then((response) => {
+                console.log(response.data);
+                this.setState({lunchOrders: response.data});
+            })
+            .catch((response) => {
+                if (response instanceof Error) {
+                    // Something happened in setting up the request that triggered an Error
+                    console.log('error', response);
+                }
+            });
+    };
+
+    saveLunchOrderHandler = (name, instructions) => {
+        const {selectedLunch} = this.state;
+
+        console.log('sending this data to server:', selectedLunch, name, instructions);
+        this.saveData(this.state.selectedLunch, name, instructions)
+            .then(() => {
+                alert('sent data to server');
+            })
+            .catch((response) => {
+                alert('error sending data to server' + JSON.stringify(response));
+            });
+    };
+
+    saveData = (selection, name, instructions) => axios.post(endpoint, {
+        name: name,
+        lunch: selection,
+        instructions: instructions
     });
-  }
-  showLunchOrdersHandler() {
-    let that = this;
-    this.getData(function(response) {
-      console.log(response.data);
-      that.setState({lunchOrders: response.data, selectedLunch: that.state.selectedLunch});
-    }, function(response) {
-      if (response instanceof Error) {
-        // Something happened in setting up the request that triggered an Error
-        console.log('error', response);
-      }
-    });
-  }
-  saveLunchOrderHandler (name, instructions) {
-    console.log('sending this data to server:', this.state.selectedLunch, name, instructions);
-    this.saveData(this.state.selectedLunch, name, instructions, function() {
-      alert('sent data to server');
-    }, function(response) {
-      alert('error sending data to server' + JSON.stringify(response));
-    });
-  }
 
+    getData = () => axios.get(endpoint);
 
-  saveData(selection, name, instructions, success, error) {
+    render() {
+        const {lunchData} = this.props;
 
-    // superagent.post(endpoint)
-    //    .send({
-    //      name: name,
-    //      lunch: selection,
-    //      instructions: instructions
-    //    })
-    //    .end(function(err, res){
-    //      if (res.ok) {
-    //        console.log('yay got ' + JSON.stringify(res.body));
-    //      } else {
-    //        console.log('Oh no! error ' + res.text);
-    //      }
-    //    });
-
-
-    axios.post(endpoint, {
-      name: name,
-      lunch: selection,
-      instructions: instructions
-    })
-    .then(function (response) {
-      success(response);
-      console.log(response);
-    })
-    .catch(function (response) {
-      error(response);
-    });
-  }
-
-  getData(success, error) {
-    axios.get(endpoint)
-    .then(function (response) {
-      success(response);
-    })
-    .catch(function (response) {
-      error(response);
-    });
-  }
-
-  render() {
-    let clickHandler = this.handleClick;
-    let lunchOptions = this.props.lunchData.map(function(c,i) {
-      return <h3 key={i} onClick={clickHandler}><Label>{c}</Label></h3>;
-    });
-    return (
-      <div>
-        <Panel header="Please select one" bsStyle="info">
-          {lunchOptions}
-        </Panel>
-        <SelectedLunchPanel  selectedLunch={this.state.selectedLunch}
-          saveLunchOrderHandler={this.saveLunchOrderHandler}></SelectedLunchPanel>
-        <AllLunchOrdersPanel lunchOrders={this.state.lunchOrders} showLunchOrdersHandler={this.showLunchOrdersHandler}></AllLunchOrdersPanel>
-      </div>
-    );
-  }
+        return (
+            <div>
+                <Panel header="Please select one" bsStyle="info">
+                    {lunchData.map((lunch, lunchIndex) => (
+                        <h3 key={lunchIndex} onClick={this.handleClick}>
+                            <Label>{lunch}</Label>
+                        </h3>
+                    ))}
+                </Panel>
+                <SelectedLunchPanel selectedLunch={this.state.selectedLunch}
+                                    saveLunchOrderHandler={this.saveLunchOrderHandler} />
+                <AllLunchOrdersPanel lunchOrders={this.state.lunchOrders}
+                                     showLunchOrdersHandler={this.showLunchOrdersHandler} />
+            </div>
+        );
+    }
 }
 
 class SelectedLunchPanel extends React.Component {
-  constructor(props) {
-    super(props);
-    this.updateInstructions = this.updateInstructions.bind(this);
-    this.state = { instructions: '' , guestName: ''};
-  }
-  updateInstructions(instructions, guestName) {
-    this.setState({instructions: instructions, guestName: guestName});
-    this.props.saveLunchOrderHandler(guestName, instructions);
-  }
-  render() {
-    return (
-      <div>
-        <Panel header="You've picked" bsStyle="warning">
-          <Label>{this.props.selectedLunch}</Label>
-          <p>Special Instructions: {this.state.instructions} for {this.state.guestName}</p>
-          <SpecialInstructionsInput
-            value={this.state.instructions}
-            updateInstructions={this.updateInstructions}
-            />
-        </Panel>
-      </div>
-    );
-  }
+    state = {
+        instructions: '',
+        guestName: ''
+    };
+
+    updateInstructions = (instructions, guestName) => {
+        this.setState({instructions: instructions, guestName: guestName});
+        this.props.saveLunchOrderHandler(guestName, instructions);
+    };
+
+    render() {
+        const {selectedLunch} = this.props;
+        const {instructions, guestName} = this.state;
+
+        return (
+            <div>
+                <Panel header="You've picked" bsStyle="warning">
+                    <Label>{selectedLunch}</Label>
+                    <p>Special Instructions: {instructions} for {guestName}</p>
+                    <SpecialInstructionsInput
+                        value={instructions}
+                        updateInstructions={this.updateInstructions} />
+                </Panel>
+            </div>
+        );
+    }
 }
 
 class SpecialInstructionsInput extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleChange = this.handleChange.bind(this);
-  }
-  handleChange() {
+    handleChange = () => {
+        this.props.updateInstructions(this.refs.specialInstructionsInput.getValue(), this.refs.guestName.getValue());
+    };
 
-    this.props.updateInstructions(this.refs.specialInstructionsInput.getValue(), this.refs.guestName.getValue());
-  }
-  render() {
-    return (
-      <div>
-        <Input
-          ref='specialInstructionsInput'
-          type='text'
-          placeholder="Enter Instructions"
-           />
-         <Input
-             ref='guestName'
-             type='text'
-             placeholder="Enter Guest Name.."
-              />
-       <Button onClick={this.handleChange}>Submit</Button>
-      </div>
-    );
-  }
+    render() {
+        return (
+            <div>
+                <Input
+                    ref='specialInstructionsInput'
+                    type='text'
+                    placeholder="Enter Instructions" />
+                <Input
+                    ref='guestName'
+                    type='text'
+                    placeholder="Enter Guest Name.." />
+                <Button onClick={this.handleChange}>Submit</Button>
+            </div>
+        );
+    }
 }
 
 class AllLunchOrdersPanel extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-  render() {
-    let lunchOrders = this.props.lunchOrders.map(function(c,i) {
-      return <p key={i}>Guest: {c.name} ordered {c.lunch} with instructions: {c.instructions} </p>;
-    });
-    return (
-      <div>
-        <Panel header="Current Orders" bsStyle="info">
-          <Button onClick={this.props.showLunchOrdersHandler}>Get Lunch Orders</Button>
-            {lunchOrders}
-        </Panel>
-      </div>
-    );
-  }
+    render() {
+        const {lunchOrders, showLunchOrdersHandler} = this.props;
+
+        return (
+            <div>
+                <Panel header="Current Orders" bsStyle="info">
+                    <Button onClick={showLunchOrdersHandler}>Get Lunch Orders</Button>
+                    {lunchOrders.map((lunch, lunchIndex) => (
+                        <p key={lunchIndex}>
+                            Guest: {lunch.name} ordered {lunch.lunch} with instructions: {lunch.instructions}.
+                        </p>
+                    ))}
+                </Panel>
+            </div>
+        );
+    }
 }
 
-
-var lunchChoices = ['Chicken', 'Fish', 'Vegetarian'];
+const lunchChoices = ['Chicken', 'Fish', 'Vegetarian'];
 ReactDOM.render(
-  <LunchApp lunchChoices={lunchChoices}/>,
-  document.getElementById('root')
+    <LunchApp lunchChoices={lunchChoices} />,
+    document.getElementById('root')
 );

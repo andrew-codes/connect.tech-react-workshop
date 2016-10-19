@@ -1,15 +1,16 @@
-/*eslint strict: [2, "global"]*/
-'use strict';
-var registeredCallback;
+let registeredCallbacks = {};
 
-exports.on = function(channel, callback) {
-        registeredCallback = callback;
+export const on = (channel, callback) => {
+    registeredCallbacks[channel] = callback;
 };
 
-exports.trigger = function(channel, data) {
-        registeredCallback(channel, data);
+export const trigger = (channel, data) => {
+    const callback = registeredCallbacks[channel];
+    if (callback) {
+        callback(data);
+    }
 };
 
-exports.removeCallback = function() {
-        registeredCallback = null;
+export const removeCallback = (channel) => {
+    registeredCallbacks[channel] = undefined;
 };
