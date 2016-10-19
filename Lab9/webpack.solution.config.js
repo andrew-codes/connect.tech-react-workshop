@@ -23,13 +23,13 @@ module.exports = {
 
   // devtool: 'inline-source-map',
   devtool: 'eval-source-map',
-  module: {    
+  module: {
     loaders: [
       {
         test: /\.js/,
         exclude: /node_modules/,
         loaders: [
-          'babel-loader?optional[]=runtime&stage=0'
+          'babel-loader'
         ]
       },
       {test: /\.js$/, loader: "eslint-loader", exclude: /node_modules/}
