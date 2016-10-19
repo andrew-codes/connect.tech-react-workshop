@@ -164,6 +164,10 @@ class SpecialInstructionsInput extends React.Component {
 }
 
 class AllLunchOrdersPanel extends React.Component {
+    static defaultProps = {
+        lunchOrders: []
+    };
+
     render() {
         const {lunchOrders, showLunchOrdersHandler} = this.props;
 
