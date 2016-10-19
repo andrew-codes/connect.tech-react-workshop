@@ -1,8 +1,8 @@
 import React from 'react';
 import {mount} from 'enzyme';
-import TodoItem from '../Lab13/todo-item';
+import TodoItem from './ToDoItem';
 
-describe('Todo-item component', function() {
+describe('<ToDoItem />', function() {
     describe('when rendering the component', () => {
         beforeEach(() => {
             this.actual = mount(
